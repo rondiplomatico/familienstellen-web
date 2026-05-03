@@ -189,12 +189,11 @@
                 <!-- Online-Anmeldung mit Stripe / PayPal -->
                 <div class="anmeldung-box">
                     <h3>Online anmelden</h3>
-                    <p class="anmeldung-hinweis"><strong>Hinweis:</strong> Die Online-Anmeldung mit Kreditkarte (Stripe) und PayPal wird in Kürze freigeschaltet. Bitte schreibe uns vorerst eine E-Mail (siehe unten).</p>
 
-                    <form class="anmeldeformular" action="https://creabyte.de/api/create_registration.php" method="POST" id="anmeldeformular">
+                    <form class="anmeldeformular" action="https://creabyte.de/aufstellung/create_registration.php" method="POST" id="anmeldeformular">
                         <input type="hidden" name="event_slug" value="2026-03-27-familienaufstellung-bernhaeuser-forst">
 
-                        <fieldset disabled>
+                        <fieldset>
                             <div class="form-row">
                                 <label for="name">Name *</label>
                                 <input type="text" id="name" name="name" required>
@@ -251,6 +250,7 @@
                             <div class="form-row">
                                 <button type="submit" class="submit-btn">Verbindlich anmelden &amp; bezahlen</button>
                             </div>
+                            <p class="anmeldung-status" id="anmeldung-status" role="status" aria-live="polite"></p>
                         </fieldset>
                     </form>
                 </div>
@@ -314,5 +314,48 @@
             </p>
         </div>
     </footer>
+
+    <script>
+    (function () {
+        const form = document.getElementById('anmeldeformular');
+        const statusEl = document.getElementById('anmeldung-status');
+        const fieldset = form.querySelector('fieldset');
+        const submitBtn = form.querySelector('.submit-btn');
+
+        form.addEventListener('submit', async function (e) {
+            e.preventDefault();
+            statusEl.textContent = '';
+            statusEl.className = 'anmeldung-status';
+
+            const data = Object.fromEntries(new FormData(form).entries());
+            data.datenschutz = !!data.datenschutz;
+            data.anzahl_personen = parseInt(data.anzahl_personen, 10) || 1;
+
+            fieldset.disabled = true;
+            submitBtn.textContent = 'Wird gesendet...';
+
+            try {
+                const res = await fetch(form.action, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                const json = await res.json().catch(() => ({}));
+                if (res.ok && json.ok && json.redirect_url) {
+                    statusEl.textContent = 'Weiterleitung zur Zahlung...';
+                    statusEl.classList.add('status-success');
+                    window.location.href = json.redirect_url;
+                } else {
+                    throw new Error(json.error || ('HTTP ' + res.status));
+                }
+            } catch (err) {
+                statusEl.textContent = 'Fehler: ' + err.message + '. Bitte erneut versuchen oder per E-Mail anmelden.';
+                statusEl.classList.add('status-error');
+                fieldset.disabled = false;
+                submitBtn.textContent = 'Verbindlich anmelden & bezahlen';
+            }
+        });
+    })();
+    </script>
 </body>
 </html>

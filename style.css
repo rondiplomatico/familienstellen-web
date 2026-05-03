@@ -1064,6 +1064,32 @@ footer p {
 
 .submit-btn:disabled {
     cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.anmeldung-status {
+    margin-top: var(--spacing-sm);
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    text-align: center;
+    min-height: 0;
+}
+
+.anmeldung-status:empty {
+    display: none;
+}
+
+.anmeldung-status.status-success {
+    background: rgba(107, 142, 35, 0.15);
+    color: var(--green-dark);
+    border-left: 4px solid var(--green-medium);
+}
+
+.anmeldung-status.status-error {
+    background: rgba(199, 21, 133, 0.1);
+    color: var(--magenta);
+    border-left: 4px solid var(--magenta);
 }
 
 /* ===================================
