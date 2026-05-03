@@ -1,0 +1,23 @@
+{
+  "slug": "2026-03-27-familienaufstellung-bernhaeuser-forst",
+  "titel": "Familienaufstellung Wochenende",
+  "untertitel": "mit Chaitanya",
+  "datum_start": "2026-03-27",
+  "datum_ende": "2026-03-29",
+  "datum_anzeige": "27. – 29. März 2026",
+  "uhrzeit_start": "09:00",
+  "uhrzeit_ende": "16:00",
+  "ort_slug": "bernhaeuser-forst",
+  "person_slug": "chaitanya",
+  "preis_voll_eur": 315,
+  "anzahlung_eur": 100,
+  "preis_inkludiert": "Verpflegung (Hauptmahlzeiten und Pausen mit Kuchen). Übernachtung nach Anfrage extra.",
+  "kurzbeschreibung": "Drei Tage intensiver Selbsterfahrung und Heilung durch Familienaufstellung mit Chaitanya im Bernhäuser Forst.",
+  "hero_bild": "assets/shared/aufstellung/aufstellung.jpeg",
+  "card_bild": "assets/locations/bernhaeuser-forst/bernhaeuser-forst-1.jpg",
+  "status": "upcoming",
+  "anmeldung_offen": true,
+  "max_teilnehmer": 12,
+  "verfuegbarkeit_text": "Nur noch wenige Plätze verfügbar – Jetzt anmelden!",
+  "rueckblick": null
+}
