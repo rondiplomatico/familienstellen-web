@@ -428,6 +428,69 @@ section:nth-child(odd) {
     margin: var(--spacing-sm) 0;
 }
 
+/* Frühbucher-Banner ganz oben — wird per data-fb nach dem Stichtag ausgeblendet */
+.fruehbucher-banner {
+    background: linear-gradient(135deg, var(--magenta) 0%, var(--turquoise) 100%);
+    text-align: center;
+}
+
+.fruehbucher-banner a {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    padding: 0.7rem var(--spacing-md);
+    color: var(--white);
+    text-decoration: none;
+    font-size: 1.05rem;
+    line-height: 1.4;
+}
+
+.fruehbucher-banner a:hover .fb-text {
+    text-decoration: underline;
+}
+
+.fruehbucher-banner .fb-badge {
+    background: var(--white);
+    color: var(--magenta);
+    border-radius: 999px;
+    padding: 0.15rem 0.7rem;
+    font-size: 0.8rem;
+    font-weight: bold;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+/* Durchgestrichener Regulärpreis neben dem Frühbucher-Preis */
+.price-alt {
+    color: var(--gray-medium);
+    font-weight: normal;
+    font-size: 0.7em;
+    margin-right: 0.2em;
+}
+
+/* Frühbucher-Hinweis — wird per data-fb nach dem Stichtag ausgeblendet */
+.fruehbucher {
+    display: inline-block;
+    background: rgba(199, 21, 133, 0.1);
+    border: 1px solid var(--magenta);
+    border-radius: 8px;
+    padding: 0.35rem 0.7rem;
+    font-size: 0.9rem;
+    color: var(--gray-dark);
+}
+
+.fruehbucher strong {
+    color: var(--magenta);
+}
+
+/* Sicherheitsnetz: [hidden] muss auch gegen display:flex/inline-block gewinnen */
+[hidden] {
+    display: none !important;
+}
+
 .included {
     font-size: 0.9rem;
     color: var(--gray-medium);
@@ -1269,6 +1332,10 @@ footer p {
 
 /* Print Styles */
 @media print {
+    .fruehbucher-banner {
+        display: none;
+    }
+
     .hero {
         height: auto;
         min-height: auto;

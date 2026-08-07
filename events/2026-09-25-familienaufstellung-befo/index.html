@@ -20,6 +20,14 @@
         <a href="../../index.html" class="back-link">← Alle Aufstellungs-Wochenenden</a>
     </nav>
 
+    <!-- Frühbucher-Banner -->
+    <aside class="fruehbucher-banner" data-fb="vor">
+        <a href="#anmeldung">
+            <span class="fb-badge">Frühbucher</span>
+            <span class="fb-text"><strong>10 % Rabatt</strong> auf die Kursgebühr – nur noch bis 13.08.2026</span>
+        </a>
+    </aside>
+
     <!-- Hero Banner -->
     <header class="hero">
         <div class="hero-overlay"></div>
@@ -93,7 +101,11 @@
 
                     <div class="info-card">
                         <h3>Kursgebühr</h3>
-                        <p class="price">315 €</p>
+                        <p class="price">
+                            <span data-fb="vor"><s class="price-alt">315 €</s> 283,50 €</span>
+                            <span data-fb="nach" hidden>315 €</span>
+                        </p>
+                        <p class="fruehbucher" data-fb="vor"><strong>Frühbucher: 10 % Rabatt</strong> bei Vollzahlung – nur bis 13.08.2026</p>
                         <p>für alle Tage, oder Anzahlung 100 €</p>
                         <p class="included">Verpflegung (Hauptmahlzeiten und Pausen mit Kuchen). Übernachtung: Zimmerkontingent reserviert – Anmeldung bei uns, Bezahlung direkt vor Ort.</p>
                     </div>
@@ -206,7 +218,8 @@
                                     </label>
                                     <label class="radio-option">
                                         <input type="radio" name="payment_type" value="full" required checked>
-                                        <span>Voller Betrag 315 €</span>
+                                        <span data-fb="vor">Voller Betrag <s class="price-alt">315 €</s> <strong>283,50 €</strong> – Frühbucher-Rabatt bis 13.08.2026</span>
+                                        <span data-fb="nach" hidden>Voller Betrag 315 €</span>
                                     </label>
                                 </div>
                             </div>
@@ -294,6 +307,15 @@
     </footer>
 
     <script>
+    // Frühbucher-Anzeige: läuft nach dem Stichtag von selbst ab.
+    // Nur Darstellung — verbindlich ist allein der serverseitig berechnete Betrag.
+    (function () {
+        const bis = new Date('2026-08-13T23:59:59+02:00');
+        if (new Date() <= bis) return;
+        document.querySelectorAll('[data-fb="vor"]').forEach(el => { el.hidden = true; });
+        document.querySelectorAll('[data-fb="nach"]').forEach(el => { el.hidden = false; });
+    })();
+
     (function () {
         const form = document.getElementById('anmeldeformular');
         const statusEl = document.getElementById('anmeldung-status');

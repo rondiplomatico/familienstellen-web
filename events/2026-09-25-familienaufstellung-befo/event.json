@@ -12,6 +12,11 @@
   "preis_voll_eur": 315,
   "anzahlung_eur": 100,
   "preis_inkludiert": "Verpflegung (Hauptmahlzeiten und Pausen mit Kuchen). Übernachtung: Zimmerkontingent reserviert – Anmeldung bei uns, Bezahlung direkt vor Ort.",
+  "fruehbucher": {
+    "bis": "2026-08-13",
+    "rabatt_prozent": 10,
+    "gilt_fuer": "full"
+  },
   "kurzbeschreibung": "Drei Tage intensiver Selbsterfahrung und Heilung durch Familienaufstellung mit Chaitanya im Bernhäuser Forst.",
   "hero_bild": "assets/shared/aufstellung/aufstellung.jpeg",
   "card_bild": "assets/locations/bernhaeuser-forst/bernhaeuser-forst-1.jpg",
