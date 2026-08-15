@@ -491,6 +491,43 @@ section:nth-child(odd) {
     display: none !important;
 }
 
+/* Gesamtbetrag im Anmeldeformular — die eine Zahl, die tatsächlich abgebucht
+   wird. Bewusst hervorgehoben: bis August 2026 zeigte das Formular nur den
+   Preis für eine Person, auch wenn mehrere gebucht wurden. */
+.betrag-gesamt {
+    background: rgba(199, 21, 133, 0.06);
+    border: 1px solid var(--magenta);
+    border-radius: 10px;
+    padding: 0.9rem 1.1rem;
+}
+
+.betrag-gesamt > label {
+    margin-bottom: 0.25rem;
+}
+
+.gesamt-summe {
+    margin: 0;
+    font-size: 1.35rem;
+    line-height: 1.3;
+    color: var(--gray-dark);
+}
+
+.gesamt-summe strong {
+    color: var(--magenta);
+}
+
+.gesamt-detail {
+    font-size: 0.9rem;
+    color: var(--gray-medium);
+    white-space: nowrap;
+}
+
+.gesamt-rest {
+    margin: 0.35rem 0 0;
+    font-size: 0.9rem;
+    color: var(--gray-medium);
+}
+
 .included {
     font-size: 0.9rem;
     color: var(--gray-medium);

@@ -106,7 +106,7 @@
                             <span data-fb="nach" hidden>315 €</span>
                         </p>
                         <p class="fruehbucher" data-fb="vor"><strong>Frühbucher: 10 % Rabatt</strong> bei Vollzahlung – nur bis 13.08.2026</p>
-                        <p>für alle Tage, oder Anzahlung 100 €</p>
+                        <p>pro Person für alle Tage, oder Anzahlung 100 € pro Person</p>
                         <p class="included">Verpflegung (Hauptmahlzeiten und Pausen mit Kuchen). Übernachtung: Zimmerkontingent reserviert – Anmeldung bei uns, Bezahlung direkt vor Ort.</p>
                     </div>
 
@@ -198,7 +198,9 @@
                             </div>
                             <div class="form-row">
                                 <label for="anzahl_personen">Anzahl Personen *</label>
-                                <input type="number" id="anzahl_personen" name="anzahl_personen" min="1" max="10" value="1" required>
+                                <!-- max MUSS mit MAX_PERSONEN_PRO_ANMELDUNG in backend/lib/db.php
+                                     und dem CHECK in backend/sql/schema.sql übereinstimmen. -->
+                                <input type="number" id="anzahl_personen" name="anzahl_personen" min="1" max="10" step="1" value="1" required>
                             </div>
                             <div class="form-row">
                                 <label for="ernaehrung">Ernährungspräferenz</label>
@@ -211,18 +213,29 @@
                             </div>
                             <div class="form-row">
                                 <label>Zahlungsbetrag *</label>
+                                <!-- Die data-unit-Werte sind die maschinenlesbaren Einzelpreise PRO PERSON
+                                     (Punkt als Dezimaltrenner). Das JS unten multipliziert sie nur mit der
+                                     Personenzahl — es enthält bewusst KEINE Rabatt-, Fristen- oder
+                                     Rundungslogik, die gehört ausschließlich in apply_fruehbucher()
+                                     bzw. price_breakdown() in backend/lib/db.php. -->
                                 <div class="radio-group">
                                     <label class="radio-option">
                                         <input type="radio" name="payment_type" value="deposit" required>
-                                        <span>Anzahlung 100 € (Restbetrag 215 € vor Veranstaltung)</span>
+                                        <span data-unit="100.00" data-unit-rest="215.00">Anzahlung 100 € pro Person (Restbetrag 215 € pro Person vor Veranstaltung)</span>
                                     </label>
                                     <label class="radio-option">
                                         <input type="radio" name="payment_type" value="full" required checked>
-                                        <span data-fb="vor">Voller Betrag <s class="price-alt">315 €</s> <strong>283,50 €</strong> – Frühbucher-Rabatt bis 13.08.2026</span>
-                                        <span data-fb="nach" hidden>Voller Betrag 315 €</span>
+                                        <span data-fb="vor" data-unit="283.50">Voller Betrag <s class="price-alt">315 €</s> <strong>283,50 €</strong> pro Person – Frühbucher-Rabatt bis 13.08.2026</span>
+                                        <span data-fb="nach" hidden data-unit="315.00">Voller Betrag 315 € pro Person</span>
                                     </label>
                                 </div>
                             </div>
+                            <div class="form-row betrag-gesamt" id="betrag-gesamt" hidden>
+                                <label>Jetzt zu zahlen</label>
+                                <p class="gesamt-summe"><strong id="gesamt-betrag">–</strong> <span class="gesamt-detail" id="gesamt-detail"></span></p>
+                                <p class="gesamt-rest" id="gesamt-rest" hidden></p>
+                            </div>
+                            <input type="hidden" name="preis_ansicht_cents" id="preis_ansicht_cents" value="">
                             <div class="form-row">
                                 <label>Zahlungsmethode *</label>
                                 <div class="radio-group">
@@ -316,6 +329,64 @@
         document.querySelectorAll('[data-fb="nach"]').forEach(el => { el.hidden = false; });
     })();
 
+    // Gesamtbetrag = ausgewiesener Einzelpreis × Personenzahl.
+    //
+    // Bewusst KEINE Rabatt-, Fristen- oder Rundungslogik hier: der Server
+    // rabattiert den Einzelpreis und rundet ihn auf ganze Cent, der
+    // Gesamtbetrag ist deshalb immer ein exaktes Vielfaches davon. Alles, was
+    // dieser Block tut, ist multiplizieren — damit kann die Anzeige nicht von
+    // der serverseitigen Berechnung abdriften.
+    //
+    // MUSS nach dem Frühbucher-Block stehen: erst dort werden die hidden-Flags
+    // gesetzt, und ausgelesen wird immer der SICHTBARE Einzelpreis.
+    (function () {
+        const form   = document.getElementById('anmeldeformular');
+        const anzahl = document.getElementById('anzahl_personen');
+        const box    = document.getElementById('betrag-gesamt');
+        const out    = document.getElementById('gesamt-betrag');
+        const detail = document.getElementById('gesamt-detail');
+        const rest   = document.getElementById('gesamt-rest');
+        const feld   = document.getElementById('preis_ansicht_cents');
+        if (!form || !anzahl || !box) return;
+
+        const fmt = new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        const eur = c => fmt.format(c / 100) + ' €';
+
+        // Einzelpreis aus dem sichtbaren Span der gewählten Option, in Cent.
+        function cents(option, attr) {
+            const el = Array.prototype.slice.call(option.querySelectorAll('[' + attr + ']'))
+                            .filter(e => !e.hidden)[0];
+            if (!el) return null;
+            const v = parseFloat(el.getAttribute(attr));
+            return isNaN(v) ? null : Math.round(v * 100);
+        }
+
+        function update() {
+            const radio = form.querySelector('input[name="payment_type"]:checked');
+            const n = Math.max(1, parseInt(anzahl.value, 10) || 1);
+            const unit = radio ? cents(radio.closest('.radio-option'), 'data-unit') : null;
+
+            if (unit === null) { box.hidden = true; feld.value = ''; return; }
+
+            const total = unit * n;
+            out.textContent    = eur(total);
+            detail.textContent = n > 1 ? '(' + n + ' × ' + eur(unit) + ')' : '';
+            feld.value         = String(total);
+            box.hidden         = false;
+
+            const r = cents(radio.closest('.radio-option'), 'data-unit-rest');
+            rest.hidden = (r === null);
+            if (r !== null) {
+                rest.textContent = 'Restbetrag vor der Veranstaltung: ' + eur(r * n)
+                                 + (n > 1 ? ' (' + n + ' × ' + eur(r) + ')' : '');
+            }
+        }
+
+        form.addEventListener('change', update);
+        anzahl.addEventListener('input', update);
+        update();
+    })();
+
     (function () {
         const form = document.getElementById('anmeldeformular');
         const statusEl = document.getElementById('anmeldung-status');
@@ -330,6 +401,9 @@
             const data = Object.fromEntries(new FormData(form).entries());
             data.datenschutz = !!data.datenschutz;
             data.anzahl_personen = parseInt(data.anzahl_personen, 10) || 1;
+            // Der angezeigte Betrag geht zur Gegenprobe mit — der Server
+            // übernimmt ihn NIE, er lehnt bei Abweichung nur ab (HTTP 409).
+            data.preis_ansicht_cents = parseInt(data.preis_ansicht_cents, 10) || null;
 
             fieldset.disabled = true;
             submitBtn.textContent = 'Wird gesendet...';
