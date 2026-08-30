@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Anmelde-Status-Seiten sind Zwischenschritte der Buchung, kein Suchinhalt.
+# Sie tragen zusätzlich <meta name="robots" content="noindex,follow">.
+Disallow: /anmeldung-erfolgreich.html
+Disallow: /anmeldung-fehlgeschlagen.html
+
+Sitemap: https://aufstellung.mein-enneagramm-coach.de/sitemap.xml

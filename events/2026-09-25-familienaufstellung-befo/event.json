@@ -18,8 +18,8 @@
     "gilt_fuer": "full"
   },
   "kurzbeschreibung": "Drei Tage intensiver Selbsterfahrung und Heilung durch Familienaufstellung mit Chaitanya im Bernhäuser Forst.",
-  "hero_bild": "assets/shared/aufstellung/aufstellung.jpeg",
-  "card_bild": "assets/locations/bernhaeuser-forst/bernhaeuser-forst-1.jpg",
+  "hero_bild": "assets/shared/aufstellung/aufstellung.webp",
+  "card_bild": "assets/locations/bernhaeuser-forst/bernhaeuser-forst-1.webp",
   "status": "upcoming",
   "anmeldung_offen": true,
   "max_teilnehmer": 12,

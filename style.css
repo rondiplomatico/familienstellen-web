@@ -100,7 +100,7 @@ p {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-image: url('assets/shared/aufstellung/aufstellung.jpeg');
+    background-image: url('assets/shared/aufstellung/aufstellung.webp');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -1223,7 +1223,7 @@ footer p {
         rgba(143, 188, 143, 0.75) 50%,
         rgba(32, 178, 170, 0.85) 100%
     ),
-    url('assets/shared/aufstellung/aufstellung.jpeg');
+    url('assets/shared/aufstellung/aufstellung.webp');
     background-size: cover;
     background-position: center;
     color: var(--white);

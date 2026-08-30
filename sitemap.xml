@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Gepflegt von den Skills event-erstellen (neue URL anhängen) und event-beenden
+  (lastmod/changefreq der umgewandelten Seite). Nicht von Hand fortschreiben,
+  sonst driftet sie gegen die Event-Seiten.
+
+  Reihenfolge: Landing, Events nach Datum absteigend, dann Rechtsseiten.
+  Die Anmelde-Status-Seiten stehen bewusst nicht drin (noindex).
+-->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <url>
+    <loc>https://aufstellung.mein-enneagramm-coach.de/</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <url>
+    <loc>https://aufstellung.mein-enneagramm-coach.de/events/2026-09-25-familienaufstellung-befo/</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://aufstellung.mein-enneagramm-coach.de/events/2026-03-27-familienaufstellung-bernhaeuser-forst/</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://aufstellung.mein-enneagramm-coach.de/events/2025-06-27-familienaufstellung-befo/</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://aufstellung.mein-enneagramm-coach.de/impressum.html</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+
+  <url>
+    <loc>https://aufstellung.mein-enneagramm-coach.de/datenschutz.html</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+
+  <url>
+    <loc>https://aufstellung.mein-enneagramm-coach.de/storno.html</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+
+</urlset>
